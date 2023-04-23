@@ -1,9 +1,7 @@
 import {StyleSheet, Image, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {dayToString, monthToString} from '../data/dateAndMonths';
 
-const date = new Date();
 
 export default function CardConsultation({item}) {
   const date = new Date(item.slotDate);
