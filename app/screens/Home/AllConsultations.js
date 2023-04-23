@@ -4,11 +4,14 @@ import {appointments} from '../../data/data';
 import CardConsultation from '../../components/CardConsultation';
 
 export default function AllConsultations({navigation, route}) {
-  const appointmentList = appointments;
+  const {consultationStatus} = route.params;
 
+  const consultaions = appointments.filter(item =>
+    item.consultationStatus.includes(consultationStatus),
+  );
   return (
     <FlatList
-      data={appointmentList}
+      data={consultaions}
       keyExtractor={(item, index) => item + index}
       contentContainerStyle={{
         flexGrow: 1,
