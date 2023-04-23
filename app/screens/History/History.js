@@ -1,5 +1,4 @@
 import {
-  Alert,
   FlatList,
   Modal,
   StyleSheet,
@@ -11,7 +10,6 @@ import {
 import React, {useEffect, useState} from 'react';
 import {appointments} from '../../data/data';
 import CardConsultation from '../../components/CardConsultation';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ListEmpty from '../../components/ListEmpty';
 
 export default function History() {
