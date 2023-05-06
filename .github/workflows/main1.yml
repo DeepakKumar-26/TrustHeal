@@ -1,0 +1,41 @@
+name: RNCICD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: '14.x'
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{hashFiles('**/package-lock.json')}}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+            ${{ runner.os }}-
+            $
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Android APK
+        run: npx react-native run-android --variant=release
+
+      - name: Install APK on device
+        run: adb install -r ./android/app/build/outputs/apk/release/app-release.apk
+        shell: bash
+        env:
+          ANDROID_HOME: ${{ runner.workspace }}/android-sdk
+          PATH: ${{ env.PATH }}:${{ runner.workspace }}/android-sdk/platform-tools
