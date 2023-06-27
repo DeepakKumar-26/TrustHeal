@@ -1,0 +1,36 @@
+version: v0 # We're sticking to v0 for now. v1 onwards, we guarantee backwards compatible updates
+kind: pipeline
+name: Default
+
+steps:
+    - name: "Check if master branch"
+      when:
+          branch: master
+      then: "Install Dependencies"
+      else: "Run tests"
+
+    - name: "Install Dependencies"
+      image: node:latest
+      commands:
+          - npm ci
+      next: "Run tests"
+
+    - name: "Run tests"
+      image: node:latest
+      commands:
+          - npm run test
+      next: "Build"
+
+    - name: "Build"
+      image: node:latest
+      commands:
+          - cd android
+          - ./gradlew assembleRelease
+      environment:
+          NODE_ENV: "production"
+      next: "Publish on Patr"
+
+    - name: "Publish on Patr"
+      image: node:latest
+      commands:
+          - npm run publish
